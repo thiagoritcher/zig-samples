@@ -28,7 +28,9 @@ const Adder = *const fn (i32, i32) i32;
 
 pub fn benchFP(_: std.mem.Allocator) void {
     const self = MyBenchFP.init(&addx);
-    _ = self.add(45, 55);
+    for (0..500) |_| {
+        _ = self.add(45, 55);
+    }
 }
 
 const MyBenchFP = struct {
@@ -45,7 +47,9 @@ const MyBenchFP = struct {
 
 pub fn benchS(_: std.mem.Allocator) void {
     const self = MyBenchS.init();
-    _ = self.add(45, 55);
+    for (0..500) |_| {
+        _ = self.add(45, 55);
+    }
 }
 
 const MyBenchS = struct {
@@ -53,8 +57,12 @@ const MyBenchS = struct {
         return .{};
     }
 
-    pub fn add(_: @This(), a: i32, b: i32) i32 {
+    fn addx(_: @This(), a: i32, b: i32) i32 {
         return a + b;
+    }
+
+    pub fn add(self: @This(), a: i32, b: i32) i32 {
+        return self.addx(a, b);
     }
 };
 
